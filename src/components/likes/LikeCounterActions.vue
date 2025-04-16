@@ -33,35 +33,41 @@ const likeClicks = ref(0);
 const isLoading = ref(true);
 
 
-watch(likeCount, debounce(() => {
-    fetch(`/api/posts/likes/${props.postId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ likes: likeClicks.value })
-    })
+watch(likeCount, debounce(async () => {
+    // fetch(`/api/posts/likes/${props.postId}`, {
+    //     method: 'PUT',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ likes: likeClicks.value })
+    // })
+
+    await actions.updatePostLikes({
+        postId: props.postId,
+        increment: likeClicks.value
+    });
 
     likeClicks.value = 0;
+
 }, 500))
 
 const likePost = async () => {
-    console.log('+1 like');
+    //console.log('+1 like');
 
     likeCount.value++
     likeClicks.value++
 
-    const { data, error } = await actions.getGreeting({
-        name: "chris",
-        age: 40,
-        isActive: true
-    })
+    // const { data, error } = await actions.getGreeting({
+    //     name: "chris",
+    //     age: 40,
+    //     isActive: true
+    // })
 
-    if (error) {
-        return alert('Algo salio mal');
-    }
+    // if (error) {
+    //     return alert('Algo salio mal');
+    // }
 
-    console.log({ data });
+    // console.log({ data });
 
     confetti({
         particleCount: 100,
@@ -74,13 +80,18 @@ const likePost = async () => {
 }
 
 const getCurrentLikes = async () => {
-    const resp = await fetch(`/api/posts/likes/${props.postId}`);
-    if (!resp.ok) return;
 
-    const data = await resp.json();
+    const { data, error } = await actions.getPostLikes(props.postId)
+
+    if (error) return alert(error);
+
+    //const resp = await fetch(`/api/posts/likes/${props.postId}`);
+    //if (!resp.ok) return;
+    //const data = await resp.json();
+
     likeCount.value = data.likes;
     isLoading.value = false
-    console.log(data)
+    //console.log(data)
 }
 
 getCurrentLikes();

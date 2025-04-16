@@ -5,7 +5,7 @@ import { getCollection, getEntry } from 'astro:content';
 
 export const prerender = false; // Disable prerendering for this route
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ request }) => {
 	const posts = await getCollection('blog');
 
 	const url = new URL(request.url);

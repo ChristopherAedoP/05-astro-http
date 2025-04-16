@@ -5,7 +5,7 @@ import { db, eq, Posts } from 'astro:db';
 
 export const prerender = false; // Disable prerendering for this route
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params }) => {
 	const postId = params.id ?? '';
 
 	const post = await db.select().from(Posts).where(eq(Posts.id, postId));

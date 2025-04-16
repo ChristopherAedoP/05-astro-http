@@ -5,7 +5,7 @@ import { Clients, db, eq } from 'astro:db';
 
 export const prerender = false; // Disable prerendering for this route
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params }) => {
 	const clientId = params.clientId ?? '';
 
 	const Client = await db
@@ -66,7 +66,7 @@ export const PATCH: APIRoute = async ({ params, request }) => {
 	}
 };
 
-export const DELETE: APIRoute = async ({ params, request }) => {
+export const DELETE: APIRoute = async ({ params }) => {
 	const clientId = (params.clientId = '');
 
 	const { rowsAffected } = await db
